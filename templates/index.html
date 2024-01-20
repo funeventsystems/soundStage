@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        var request;
+
+        if (window.XMLHttpRequest) {
+            // for modern browsers
+            request = new XMLHttpRequest();
+        } else {
+            // for IE6, IE5
+            request = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        function setup() {
+            fetch("http://10.0.0.181:106/setup")
+                .then((response) => response.json())
+                .then((json) => console.log(json));
+        }
+        function stop() {
+            fetch("http://10.0.0.181:106/stop")
+                .then((response) => response.json())
+                .then((json) => console.log(json));
+        }
+        function fish() {
+            fetch("http://10.0.0.181:106/fish")
+                .then((response) => response.json())
+                .then((json) => console.log(json));
+        }
+        function startScene(sceneNumber) {
+            fetch(`http://10.0.0.181:106/startScene/${sceneNumber}`)
+                .then((response) => response.json())
+                .then((json) => console.log(json));
+        }
+
+
+    </script>
+    <style>
+        body {
+            font-family: Courier New;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #3498db;
+            background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+            background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+            background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+            background-image: -o-linear-gradient(top, #3498db, #2980b9);
+            background-image: linear-gradient(to bottom, #3498db, #2980b9);
+            border: none;
+            color: #ffffff;
+            font-size: 20px;
+            padding: 20px;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 28px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #3cb0fd;
+            background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+            background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background: #3498db;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background: #3cb0fd;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn" onclick="setup()">Setup</button>
+    <button class="btn" onclick="stop()">Stop all sounds</button>
+    <button class="btn" onclick="startScene(1)">Start scene 1</button>
+    <button class="btn" onclick="startScene(2)">Start scene 2</button>
+    <button class="btn" onclick="startScene(3)">Start scene 3</button>
+    <button class="btn" onclick="startScene(4)">Start scene 4</button>
+    <button class="btn" onclick="startScene(5)">Start scene 5</button>
+    <button class="btn" onclick="startScene(6)">Start scene 6</button>
+    <button class="btn" onclick="startScene(7)">Start scene 7</button>
+    <button class="btn" onclick="startScene(8)">Start scene 8</button>
+    <button class="btn" onclick="startScene(9)">Start scene 9</button>
+    <button class="btn" onclick="startScene(10)">Start scene 10</button>
+    <button class="btn" onclick="startScene(11)">Start scene 11</button>
+
+    <form id="myForm">
+        <label for="sentCommand">Command</label>
+        <input type="text" id="sentCommand" name="sentCommand" value="cat fish.fb > /dev/fb0">
+        <input type="submit" value="Submit">
+    </form>
+</body>
+<a href="/uploadpage" class="btn">Upload Media Files</a>
+<script>
+    var form = document.getElementById('myForm');
+    form.onsubmit = function (event) {
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData(form);
+        //open the request
+        xhr.open('POST', 'http://10.0.0.181:106/command')
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        //send the form data
+        xhr.send(JSON.stringify(Object.fromEntries(formData)));
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                form.reset(); //reset form after AJAX success or do something else
+            }
+        }
+        //Fail the onsubmit to avoid page refresh.
+        return false;
+    }
+</script>
+
+</html>
